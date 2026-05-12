@@ -1,10 +1,10 @@
-const {api}
+const { api } = require("../services/api");
 
 export const sub_categoriesAPI = api.injectEndpoints({
   endpoints: (build) => ({
-    
-    getSubCategories: build.query({
-      query: () => "sub_categories",
+
+    getSubCategoriesById: build.query({
+      query: (categoryId) => `sub_categories/${categoryId}`,
       providesTags: ["SubCategory"],
     }),
 
@@ -16,7 +16,8 @@ export const sub_categoriesAPI = api.injectEndpoints({
       }),
       invalidatesTags: ["SubCategory"],
     }),
-deleteSubCategory: build.mutation({
+
+    deleteSubCategory: build.mutation({
       query: (id) => ({
         url: `sub_categories/${id}`,
         method: "DELETE",
@@ -27,8 +28,9 @@ deleteSubCategory: build.mutation({
   }),
   overrideExisting: false,
 });
+
 export const {
-  useGetSubCategoriesQuery,
+  useGetSubCategoriesByIdQuery,
   useCreateSubCategoryMutation,
   useDeleteSubCategoryMutation,
-} = sub_categoriesAPI;  
+} = sub_categoriesAPI;

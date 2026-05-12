@@ -1,32 +1,34 @@
-const {apiSlice} = require("../services/api");
+import { api } from "../services/api";
 
-export const sub_categoriesAPI = apiSlice.injectEndpoints({
-    endpoints: (build) => ({
-        getSubCategories: build.query({
-            query: () => "sub_categories",
-            providesTags: ["Sub_categories"],
-        }),
-
-        createSubCategory: build.mutation({
-            query: (subCategoryData) => ({
-                url: "sub_categories",
-                method: "POST",
-                body: subCategoryData,
-            }),
-            invalidatesTags: ["Sub_categories"],
-        }),
-        deleteSubCategory: build.mutation({
-            query: (id) => ({
-                url: `sub_categories/${id}`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["Sub_categories"],
-        }),
+export const CategoriesAPI = api.injectEndpoints({
+  endpoints: (build) => ({
+    getCategories: build.query({
+      query: () => "/categories",
+      providesTags: ["Categories"],
     }),
-    overrideExisting: false,
+
+    createCategory: build.mutation({
+      query: (categoryData) => ({
+        url: "/categories",
+        method: "POST",
+        body: categoryData,
+      }),
+      invalidatesTags: ["Categories"],
+    }),
+
+    deleteCategory: build.mutation({
+      query: (id) => ({
+        url: `/categories/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Categories"],
+    }),
+  }),
+  overrideExisting: false,
 });
+
 export const {
-    useGetSubCategoriesQuery,
-    useCreateSubCategoryMutation,
-    useDeleteSubCategoryMutation,
-} = sub_categoriesAPI;
+  useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useDeleteCategoryMutation,
+} = CategoriesAPI;

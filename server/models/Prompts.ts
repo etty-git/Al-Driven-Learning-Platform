@@ -23,6 +23,10 @@ const PromptSchema = new mongoose.Schema({
         ref: 'User',
         required: true
  }
+ ,prompt:{
+     type: String,
+     required: true
+ }
 }, { timestamps: true });
 
 const Prompts = mongoose.model('Prompts', PromptSchema);

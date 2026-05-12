@@ -18,12 +18,12 @@ const createPrompt = async (
 
 
 }
-const getResponses = async (
+const getPrompts = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const result = await PromptsService.getResponses();
+    const result = await PromptsService.getPrompts();
     return res.status(200).json(result);
   } catch (error: any) {
     return res.status(500).json({
@@ -31,13 +31,13 @@ const getResponses = async (
     });
   }
 };
-const getResponsesByID = async (
+const getPromptsByID = async (
   req: Request<{ id: string }>,
   res: Response
 ): Promise<Response> => {
   try {
 
-  const result = await PromptsService.getResponsesByID(req.params.id);
+  const result = await PromptsService.getPromptsByID(req.params.id);
     return res.status(200).json(result);
   } catch (error: any) {
     return res.status(400).json({
@@ -58,4 +58,4 @@ const getPromptsByUserID = async (
     });
   }
 };
-export default { createPrompt, getResponses, getResponsesByID, getPromptsByUserID };
+export default { createPrompt, getPrompts, getPromptsByID, getPromptsByUserID };

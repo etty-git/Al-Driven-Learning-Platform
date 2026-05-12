@@ -1,5 +1,5 @@
 
-const Prompts = require("../models/Prompts");
+import Prompts from "../models/Prompts";
 
 import Sub_Category from "../models/Sub_categories";
 import User from "../models/Users";
@@ -9,9 +9,9 @@ import axios from "axios";
 
 export const createPrompt = async (data: any) => {
 
-    const { sub_category_id, category_id, user_id } = data;
+    const { sub_category_id, category_id, user_id, prompt } = data;
 
-    if (!sub_category_id || !category_id || !user_id) {
+    if (!sub_category_id || !category_id || !user_id || !prompt) {
         throw new Error("Please provide all required fields");
     }
 
@@ -37,48 +37,53 @@ export const createPrompt = async (data: any) => {
     const aiResponse = await axios.post(
       process.env.AI_API_URL!,
       {
-        sub_category: subCategory.name,
-        category: category.name,
-        user: user.name,
+        model: "gpt-3.5-turbo", // or whatever model
+        messages: [
+          {
+            role: "user",
+            content: `Sub-category: ${subCategory.name}, Category: ${category.name}, User: ${user.name}, Prompt: ${prompt}`,
+          },
+        ],
       },
       {
         headers: {
           Authorization: `Bearer ${process.env.AI_API_KEY}`,
+          "Content-Type": "application/json",
         },
       }
     );
 
+    const aiResponseText = aiResponse.data.choices?.[0]?.message?.content || "No response from AI";
+
     // שמירה למסד נתונים
-    const prompt = await Prompts.create({
+    const promptDoc = await Prompts.create({
       sub_category_id,
       category_id,
       user_id,
-      response: aiResponse.data.response,
+      prompt: prompt,
+      response: aiResponseText,
     });
 
     // תשובה אחת בלבד
     return {
       message: "Prompt created successfully",
-      prompt,
-      aiResponse: aiResponse.data,
+      prompt: promptDoc,
+      aiResponse: aiResponseText,
     };
   
 };
-export const getResponses = async ()=> {
+export const getPrompts = async ()=> {
 
     const prompts = await Prompts.find();
-
-    const responses = prompts.map((prompt: any) => prompt.response);
-
     return {
       message: "Responses retrieved successfully",
-      responses,
+      prompts,
     };
 
   } 
    
 
-export const getResponsesByID = async (User_id: string)=>{
+export const getPromptsByID = async (User_id: string)=>{
  
 
     if (!User_id) {
@@ -89,13 +94,11 @@ export const getResponsesByID = async (User_id: string)=>{
       user_id: User_id,
     });
 
-    const responses = prompts.map(
-      (prompt: any) => prompt.response
-    );
+    
 
     return {
-      message: "Responses retrieved successfully",
-      responses,
+      message: "Prompts retrieved successfully",
+      prompts,
     };
 
   

@@ -1,8 +1,10 @@
+import { loadStoredJson, removeStoredJson, storageKeys } from "./storage";
+
 export const isLoggedIn = () => {
-  return !!localStorage.getItem("token");
+  return !!loadStoredJson(storageKeys.auth)?.token;
 };
 
 export const logoutUser = () => {
-  localStorage.removeItem("token");
+  removeStoredJson(storageKeys.auth);
   localStorage.removeItem("refreshToken");
 };

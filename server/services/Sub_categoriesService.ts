@@ -34,7 +34,8 @@ export const createSubCategory = async (data: any)=> {
 
    
 };
-export const getSubCategories = async (categoryId: string): Promise<any> => {
+export const getSubCategoriesByCategoryId = async (categoryId: string): Promise<any> => {
+  
     const subCategories = await Sub_Category.find({
     category: categoryId
   });

@@ -3,7 +3,8 @@ import User from "../models/Users";
 
 export const createUser = async (data: any) => {
   
-    const { name, phone } = data;
+    const name = data.name?.trim();
+    const phone = data.phone?.trim();
 
     if (!name || !phone) {
     throw new Error("Please provide all required fields");
@@ -36,7 +37,8 @@ export const createUser = async (data: any) => {
 
 export const loginUser = async (data: any) => {
   
-    const {  name, phone } = data;
+    const name = data.name?.trim();
+    const phone = data.phone?.trim();
 
     if (!phone||!name) {
       throw new Error("Please provide the phone number and name");
@@ -84,11 +86,7 @@ export const getAllUsers = async () => {
     
 };
     
-export const deleteUser = async (data: any) => {
-    
-   
-    const { id } = data;
-
+export const deleteUser = async (id: string) => {
     const user = await User.findByIdAndDelete(id);
 
     if (!user) {
@@ -96,7 +94,20 @@ export const deleteUser = async (data: any) => {
     }
     return {
       message: "User deleted successfully"
+    };
+};
+  const logoutUser = async (data: any) => {
+    const { id } = data;
+    const user = await User.findById(id);
+    if (!user) {
+      throw new Error("User not found");
     }
+    
+
+    return {
+      message: "User logged out successfully"
     }
+  }
+export default { createUser, loginUser, getbyId, getAllUsers, deleteUser, logoutUser };
   
 

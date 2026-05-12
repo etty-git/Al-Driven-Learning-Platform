@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import * as CategoriesService from "../services/CategoriesService";
 const getCategories = async (req: Request, res: Response): Promise<Response> => {
-  try { const result = await CategoriesService.getCategories();
+  try {
+    const result = await CategoriesService.getCategories();
     return res.status(200).json(result);
-  } catch (error) {
+  } catch (error: any) {
+    console.log("🔥 ERROR:", error);
     return res.status(500).json({
-      message: "Server error"
+      message: error.message || "Server error"
     });
-  } 
+  }
 };
 const createCategory = async (req: Request, res: Response): Promise<Response> => {
   try {

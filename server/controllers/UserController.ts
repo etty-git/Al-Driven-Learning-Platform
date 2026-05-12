@@ -46,9 +46,9 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
     });
   }
 };
-const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+const deleteUser = async (req: Request<{ id: string }>, res: Response): Promise<Response> => {
   try {
-    const result = await UserService.deleteUser(req.body);
+    const result = await UserService.deleteUser(req.params.id);
     return res.status(200).json(result);
   } catch (error: any) {
     return res.status(400).json({

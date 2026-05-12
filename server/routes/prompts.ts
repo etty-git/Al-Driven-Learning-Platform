@@ -3,7 +3,7 @@ const router = express.Router();
 import PromptsController from "../controllers/PromptsController";
 
 router.post("/", PromptsController.createPrompt);
-router.get("/responses", PromptsController.getResponses);
-router.get("/responses/:id", PromptsController.getResponsesByID);
+router.get("/prompts", PromptsController.getPrompts);
+router.get("/prompts/:id", PromptsController.getPromptsByID);
 router.get("/user/:id", PromptsController.getPromptsByUserID);
-export default router;
+module.exports = router;

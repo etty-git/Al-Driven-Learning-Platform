@@ -19,7 +19,7 @@ const createSubCategory = async (
 };
 const getSubCategories = async (req: Request<{ categoryId: string }>, res: Response): Promise<Response> => {
   try {
-    const result = await Sub_categoriesService.getSubCategories(req.params.categoryId);
+    const result = await Sub_categoriesService.getSubCategoriesByCategoryId(req.params.categoryId);
 
     return res.status(200).json(result);
 
