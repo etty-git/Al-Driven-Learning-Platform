@@ -3,14 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useRegisterUserMutation } from "../features/usersAPI";
 import { setUser } from "../features/auth/authSlice";
-import{Categories} from './categories/CategoriesPage';
+
 export default function Register() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [registerUser, { isLoading }] = useRegisterUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,14 +30,16 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center mt-20">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow">
-        <h2 className="text-xl mb-4">Register</h2>
+    <main className="auth-page">
+      <form onSubmit={handleSubmit} className="auth-panel auth-form">
+        <span className="eyebrow">Create account</span>
+        <h1>Register</h1>
+        <p>Save your profile and start creating prompts by category.</p>
 
         <input
           type="text"
           placeholder="Name"
-          className="border p-2 mb-2 w-full"
+          className="auth-input"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -47,27 +48,23 @@ export default function Register() {
         <input
           type="text"
           placeholder="Phone"
-          className="border p-2 mb-2 w-full"
+          className="auth-input"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           required
         />
 
-        <button
-          type="submit"
-          className="bg-purple-500 text-white p-2 w-full"
-          disabled={isLoading}
-        >
+        <button type="submit" className="primary-button" disabled={isLoading}>
           {isLoading ? "Registering..." : "Register"}
         </button>
 
-        <p className="mt-4">
+        <p>
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-500">
+          <Link to="/login" className="form-link">
             Login
           </Link>
         </p>
       </form>
-    </div>
+    </main>
   );
 }

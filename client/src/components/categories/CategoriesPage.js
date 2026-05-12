@@ -1,40 +1,66 @@
 import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../features/categoriesAPI";
-import { useNavigate } from "react-router-dom";
+
 const CategoriesPage = () => {
   const authUser = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   const isAuthenticated = Boolean(token && authUser);
   const navigate = useNavigate();
-
   const { data, isLoading, error } = useGetCategoriesQuery();
 
-  const cardClass =
-    "bg-white shadow rounded-lg p-4 text-center hover:shadow-lg transition";
+  if (!isAuthenticated) {
+    return (
+      <main className="page">
+        <section className="hero">
+          <span className="eyebrow">Welcome</span>
+          <h1>Login to choose a category.</h1>
+          <p>Your categories and prompt workspace open after connecting.</p>
+          <div>
+            <Link className="primary-button" to="/login">
+              Login
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl mb-4">Categories</h1>
+    <main className="page">
+      <section className="hero">
+        <span className="eyebrow">Hi, {authUser.name}</span>
+        <h1>What do you want to create today?</h1>
+        <p>Choose a category. The next screen has the sub-categories, prompt box, and AI response.</p>
+      </section>
 
-      {isLoading && <p>Loading...</p>}
+      <section>
+        <div className="section-header">
+          <h2>Categories</h2>
+          <span className="section-subtitle">Select one to continue</span>
+        </div>
 
-      {error && <p>Error loading categories</p>}
+        {isLoading && <p className="empty-state">Loading categories...</p>}
+        {error && <p className="error-text">Error loading categories</p>}
 
-      {data && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {data.map((cat) => (
-            <div key={cat._id} className={cardClass}>
-             <button
-      className="mt-2 bg-purple-500 text-white px-4 py-2 rounded"
-      onClick={() => navigate(`/categories/${cat._id}`)}
->
-  {cat.name}
-</button>
-            </div>
+        <div className="grid">
+          {data?.map((cat) => (
+            <button
+              key={cat._id}
+              className="category-card"
+              onClick={() => navigate(`/categories/${cat._id}`)}
+            >
+              <h3>{cat.name}</h3>
+              <p>Open prompt workspace</p>
+            </button>
           ))}
         </div>
-      )}
-    </div>
+
+        {!isLoading && !data?.length && (
+          <p className="empty-state">No categories yet.</p>
+        )}
+      </section>
+    </main>
   );
 };
 

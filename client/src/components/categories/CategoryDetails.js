@@ -1,107 +1,112 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useGetSubCategoriesByIdQuery } from "../../features/sub_categoriesAPI";
-import{useCreatePromptMutation} from "../../features/promptsAPI";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useGetSubCategoriesByIdQuery } from "../../features/sub_categoriesAPI";
+import { useCreatePromptMutation } from "../../features/promptsAPI";
+
 const CategoryDetails = () => {
   const authUser = useSelector((state) => state.auth.user);
   const { id } = useParams();
-
-  const {
-    data: subCategories,
-    isLoading,
-    isError,
-  } = useGetSubCategoriesByIdQuery(id);
-
-  // איזה כרטיס נבחר
-  const [selectedId, setSelectedId] = useState(null);
-
-  // טקסט של הפרומפט
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
   const [prompt, setPrompt] = useState("");
-const [response, setResponse] = useState("");
-  const [createPrompt] = useCreatePromptMutation();
+  const [response, setResponse] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const { data: subCategories, isLoading, isError } = useGetSubCategoriesByIdQuery(id);
+  const [createPrompt, { isLoading: isSending }] = useCreatePromptMutation();
 
-  const handleSubmit = async() => {
-    try{
- const result = await createPrompt({
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
 
-      sub_category_id: selectedId,
-
-      category_id: id,
-
-      user_id: authUser._id,
-      prompt: prompt,
-
-    }).unwrap();
-setResponse(result.aiResponse || "No response from AI");
+    if (!authUser?._id) {
+      setErrorMessage("Please login before sending a prompt.");
+      return;
     }
-    catch(err){
-      
- console.log("FULL ERROR:", err);
-  console.log("DATA:", err?.data);
-  console.log("MESSAGE:", err?.data?.message)
+
+    if (!selectedId || !prompt.trim()) {
+      setErrorMessage("Choose a sub-category and write a prompt.");
+      return;
+    }
+
+    try {
+      const result = await createPrompt({
+        sub_category_id: selectedId,
+        category_id: id,
+        user_id: authUser._id,
+        prompt: prompt.trim(),
+      }).unwrap();
+
+      setResponse(result.aiResponse || "No response from AI");
+    } catch (err) {
+      setErrorMessage(err?.data?.message || err?.error || "Error sending prompt");
     }
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl mb-6">Sub Categories</h1>
+    <main className="page">
+      <div className="section-header">
+        <div>
+          <span className="eyebrow">Prompt workspace</span>
+          <h1 className="page-title">Write your prompt</h1>
+        </div>
+        <Link className="nav-link" to="/categories">
+          Back to categories
+        </Link>
+      </div>
 
-      {isLoading && <p>Loading...</p>}
+      <div className="workspace">
+        <aside className="side-panel">
+          <h2>Sub-categories</h2>
 
-      {isError && <p>Error loading sub categories</p>}
+          {isLoading && <p className="empty-state">Loading...</p>}
+          {isError && <p className="error-text">Error loading sub-categories</p>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-
-        {subCategories?.map((sub) => (
-
-          <div
-            key={sub._id}
-            onClick={() => setSelectedId(sub._id)}
-            className={`
-              p-4 rounded-lg shadow cursor-pointer transition
-              ${
-                selectedId === sub._id
-                  ? "bg-purple-500 text-white"
-                  : "bg-white hover:shadow-lg"
-              }
-            `}
-          >
-            {/* שם תת קטגוריה */}
-            <h2 className="text-lg font-semibold mb-3">
-              {sub.name}
-            </h2>
-
-            {/* אם הכרטיס נבחר */}
-            {selectedId === sub._id && (
-              <div className="mt-4">
-
-                <textarea
-                  className="w-full border rounded p-2 text-black"
-                  placeholder="כתוב פרומפט..."
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                />
-
-                <button
-                  className="mt-3 w-full bg-black text-white py-2 rounded"
-                  onClick={handleSubmit}
-                >
-                  שלח
-                </button>
-{response && (
-  <div className="mt-4 p-3 bg-gray-100 rounded text-black">
-    <h3 className="font-bold mb-2">Response:</h3>
-    <p>{response}</p>
-  </div>
-)}
-              </div>
-            )}
+          <div className="subcat-list">
+            {subCategories?.map((sub) => (
+              <button
+                key={sub._id}
+                className={`subcat-button ${selectedId === sub._id ? "selected" : ""}`}
+                onClick={() => {
+                  setSelectedId(sub._id);
+                  setSelectedName(sub.name);
+                }}
+              >
+                {sub.name}
+              </button>
+            ))}
           </div>
 
-        ))}
+          {!isLoading && !subCategories?.length && (
+            <p className="empty-state">No sub-categories yet.</p>
+          )}
+        </aside>
+
+        <section className="chat-panel">
+          <span className="eyebrow">{selectedName || "Choose a sub-category"}</span>
+          <h2>Ask the AI</h2>
+
+          <div className="answer-box">
+            {response || "The AI response will appear here after you send a prompt."}
+          </div>
+
+          <form className="prompt-form" onSubmit={handleSubmit}>
+            <textarea
+              className="prompt-input"
+              placeholder="Write your prompt..."
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+            />
+
+            <button className="primary-button" type="submit" disabled={isSending}>
+              {isSending ? "Sending..." : "Send prompt"}
+            </button>
+
+            {errorMessage && <p className="error-text">{errorMessage}</p>}
+          </form>
+        </section>
       </div>
-    </div>
+    </main>
   );
 };
 

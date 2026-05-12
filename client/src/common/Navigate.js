@@ -6,28 +6,36 @@ const Navigate = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
   return (
-    <nav>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/categories">Categories</NavLink>
-      <NavLink to="/my-prompts">My Prompts</NavLink>
+    <nav className="top-nav">
+      <NavLink to="/" className="brand">
+        <span className="brand-mark">AI</span>
+        <span>Prompt Studio</span>
+      </NavLink>
 
-      {/* אם לא מחובר - תראה Login */}
-      {!auth.user && (
-        <NavLink to="/login">Login</NavLink>
-      )}
+      <div className="nav-links">
+        <NavLink to="/categories" className="nav-link">
+          Categories
+        </NavLink>
+        <NavLink to="/my-prompts" className="nav-link">
+          My Prompts
+        </NavLink>
+      </div>
 
-      {/* אם מחובר - תראה ברוך הבא + Logout */}
-      {auth.user && (
-        <>
-          <span>Welcome, {auth.user.name}!</span>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      )}
+      <div className="nav-actions">
+        {auth.user ? (
+          <>
+            <span className="user-chip">Hi, {auth.user.name}</span>
+            <button className="ghost-button" onClick={() => dispatch(logout())}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <NavLink to="/login" className="nav-link">
+            Login
+          </NavLink>
+        )}
+      </div>
     </nav>
   );
 };
