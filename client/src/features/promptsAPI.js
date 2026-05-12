@@ -16,10 +16,6 @@ export const promptsAPI = api.injectEndpoints({
       }),
       invalidatesTags: ["Prompt"],
     }),
-getPromptsByID: build.query({
-      query: (id) => `prompts/${id}`,
-      providesTags: ["Prompt"],
-    }),
     getPromptsByUserID: build.query({
       query: (id) => `prompts/user/${id}`,
       providesTags: ["Prompt"],
@@ -30,6 +26,5 @@ getPromptsByID: build.query({
 export const {
   useGetPromptsQuery,
   useCreatePromptMutation,
-  useGetPromptsByIDQuery,
   useGetPromptsByUserIDQuery,
 } = promptsAPI;  

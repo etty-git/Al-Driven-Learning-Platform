@@ -7,6 +7,7 @@ import Register from "./components/Register";
 import CategoriesPage from "./components/categories/CategoriesPage";
 import CategoryDetails from "./components/categories/CategoryDetails";
 import MyPrompts from "./components/MyPrompts";
+import MainDashboard from "./components/manager/MainDashboard";
 function App() {
   return (
     <div className="App">
@@ -17,6 +18,7 @@ function App() {
             <Route path="categories" element={<CategoriesPage />} />
             <Route path="categories/:id" element={<CategoryDetails />} />
             <Route path="my-prompts" element={<MyPrompts />} />
+            <Route path="manager" element={<MainDashboard />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

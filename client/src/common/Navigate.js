@@ -20,6 +20,11 @@ const Navigate = () => {
         <NavLink to="/my-prompts" className="nav-link">
           My Prompts
         </NavLink>
+        {auth.user?.isAdmin && (
+          <NavLink to="/manager" className="nav-link">
+            Manager
+          </NavLink>
+        )}
       </div>
 
       <div className="nav-actions">

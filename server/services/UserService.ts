@@ -1,6 +1,19 @@
 import jwt from "jsonwebtoken";
 import User from "../models/Users";
 
+const buildAuthResponse = (user: any) => {
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1h" }
+    );
+
+    return {
+      user: user.toObject(),
+      token
+    };
+};
+
 export const createUser = async (data: any) => {
   
     const name = data.name?.trim();
@@ -20,18 +33,7 @@ export const createUser = async (data: any) => {
 
     const user = await User.create({ name, phone });
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
-    );
-
-    const userObj = user.toObject();
-
-    return {
-      user: userObj,
-      token
-    };
+    return buildAuthResponse(user);
    
 };
 
@@ -51,18 +53,7 @@ export const loginUser = async (data: any) => {
       throw new Error("User not found");
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
-    );
-
-    const userObj = user.toObject();
-
-    return {
-      user: userObj,
-      token
-    };
+    return buildAuthResponse(user);
 
   
 };
@@ -96,18 +87,7 @@ export const deleteUser = async (id: string) => {
       message: "User deleted successfully"
     };
 };
-  const logoutUser = async (data: any) => {
-    const { id } = data;
-    const user = await User.findById(id);
-    if (!user) {
-      throw new Error("User not found");
-    }
-    
 
-    return {
-      message: "User logged out successfully"
-    }
-  }
-export default { createUser, loginUser, getbyId, getAllUsers, deleteUser, logoutUser };
+export default { createUser, loginUser, getbyId, getAllUsers, deleteUser };
   
 

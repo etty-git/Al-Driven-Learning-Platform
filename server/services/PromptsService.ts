@@ -74,7 +74,11 @@ export const createPrompt = async (data: any) => {
 };
 export const getPrompts = async ()=> {
 
-    const prompts = await Prompts.find();
+    const prompts = await Prompts.find()
+      .populate("user_id", "name phone isAdmin")
+      .populate("category_id", "name")
+      .populate("sub_category_id", "name")
+      .sort({ createdAt: -1 });
     return {
       message: "Responses retrieved successfully",
       prompts,
@@ -82,36 +86,16 @@ export const getPrompts = async ()=> {
 
   } 
    
-
-export const getPromptsByID = async (User_id: string)=>{
- 
-
-    if (!User_id) {
-        throw new Error("Please provide a user ID");
-    }
-
-    const prompts = await Prompts.find({
-      user_id: User_id,
-    });
-
-    
-
-    return {
-      message: "Prompts retrieved successfully",
-      prompts,
-    };
-
-  
-};
 export const getPromptsByUserID = async (id: string) => {
 
   if (!id) {
     throw new Error("Please provide a user ID");
   }
 
-  const prompts = await Prompts.find({
-    user_id: id,
-  });
+  const prompts = await Prompts.find({ user_id: id })
+    .populate("category_id", "name")
+    .populate("sub_category_id", "name")
+    .sort({ createdAt: -1 });
 
   return {
     message: "Prompts retrieved successfully",

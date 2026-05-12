@@ -198,6 +198,29 @@ button {
   margin: 0;
 }
 
+.prompt-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.prompt-meta span {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  border-radius: 999px;
+  color: var(--accent-strong);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 10px;
+}
+
+.prompt-meta-top {
+  border-bottom: 1px solid var(--line);
+  margin: -4px 0 14px;
+  padding-bottom: 14px;
+}
+
 .workspace {
   display: grid;
   gap: 18px;

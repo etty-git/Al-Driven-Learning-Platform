@@ -8,7 +8,10 @@ const createPrompt = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const result = await PromptsService.createPrompt(req.body);
+    const result = await PromptsService.createPrompt({
+      ...req.body,
+      user_id: req.user?.id,
+    });
     return res.status(201).json(result);
   } catch (error: any) {
     return res.status(400).json({
@@ -31,25 +34,17 @@ const getPrompts = async (
     });
   }
 };
-const getPromptsByID = async (
-  req: Request<{ id: string }>,
-  res: Response
-): Promise<Response> => {
-  try {
-
-  const result = await PromptsService.getPromptsByID(req.params.id);
-    return res.status(200).json(result);
-  } catch (error: any) {
-    return res.status(400).json({
-      message: error.message,
-    });
-  }
-};
 const getPromptsByUserID = async (
   req: Request<{ id: string }>,
   res: Response
 ): Promise<Response> => {
   try {
+    if (!req.user?.isAdmin && req.user?.id !== req.params.id) {
+      return res.status(403).json({
+        message: "Access denied",
+      });
+    }
+
     const result = await PromptsService.getPromptsByUserID(req.params.id);
     return res.status(200).json(result);
   } catch (error: any) {
@@ -58,4 +53,4 @@ const getPromptsByUserID = async (
     });
   }
 };
-export default { createPrompt, getPrompts, getPromptsByID, getPromptsByUserID };
+export default { createPrompt, getPrompts, getPromptsByUserID };

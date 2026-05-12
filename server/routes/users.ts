@@ -2,6 +2,8 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
 import UserController from "../controllers/UserController";
+import auth from "../middlewares/auth";
+import isAdmin from "../middlewares/isAdmin";
 
 router.post("/register", UserController.createUser);
 router.post("/login", UserController.loginUser);
@@ -18,7 +20,7 @@ router.get("/login", (req: Request, res: Response) => {
   });
 });
 
-router.get("/:id", UserController.getbyId);
-router.get("/", UserController.getAllUsers);
-router.delete("/:id", UserController.deleteUser);
+router.get("/:id", auth, UserController.getbyId);
+router.get("/", auth, isAdmin, UserController.getAllUsers);
+router.delete("/:id", auth, isAdmin, UserController.deleteUser);
 module.exports = router;

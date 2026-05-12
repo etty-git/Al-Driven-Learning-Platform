@@ -27,6 +27,12 @@ const loginUser = async (req: Request, res: Response): Promise<Response> => {
 
 const getbyId= async (req: Request<{ id: string }>, res: Response): Promise<Response> => {
   try {
+    if (!req.user?.isAdmin && req.user?.id !== req.params.id) {
+      return res.status(403).json({
+        message: "Access denied"
+      });
+    }
+
     const result = await UserService.getbyId(req.params.id);
     return res.status(200).json(result);
   } catch (error: any) {
