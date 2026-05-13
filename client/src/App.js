@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import Layout from "./common/layout";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import CategoriesPage from "./components/categories/CategoriesPage";
 import CategoryDetails from "./components/categories/CategoryDetails";
-import MyPrompts from "./components/MyPrompts";
+import MyPrompts from "./components/histort/MyHistort";
 import MainDashboard from "./components/manager/MainDashboard";
+
 function App() {
   return (
     <div className="App">

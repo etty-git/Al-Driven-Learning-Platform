@@ -12,12 +12,17 @@ const CategoryDetails = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { data: subCategories, isLoading, isError } = useGetSubCategoriesByIdQuery(id);
+  const {
+    data: subCategories,
+    isLoading,
+    isError,
+  } = useGetSubCategoriesByIdQuery(id);
   const [createPrompt, { isLoading: isSending }] = useCreatePromptMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+    setPrompt("");
 
     if (!authUser?._id) {
       setErrorMessage("Please login before sending a prompt.");
@@ -51,7 +56,7 @@ const CategoryDetails = () => {
           <h1 className="page-title">Write your prompt</h1>
         </div>
         <Link className="nav-link" to="/categories">
-          Back to categories
+          Back to professions
         </Link>
       </div>
 
@@ -60,16 +65,19 @@ const CategoryDetails = () => {
           <h2>Sub-categories</h2>
 
           {isLoading && <p className="empty-state">Loading...</p>}
-          {isError && <p className="error-text">Error loading sub-categories</p>}
+          {isError && <p className="error-text">Error loading sub-professions</p>}
 
           <div className="subcat-list">
             {subCategories?.map((sub) => (
               <button
                 key={sub._id}
-                className={`subcat-button ${selectedId === sub._id ? "selected" : ""}`}
+                className={`subcat-button ${
+                  selectedId === sub._id ? "selected" : ""
+                }`}
                 onClick={() => {
                   setSelectedId(sub._id);
                   setSelectedName(sub.name);
+                  setResponse("");
                 }}
               >
                 {sub.name}
@@ -99,7 +107,7 @@ const CategoryDetails = () => {
             />
 
             <button className="primary-button" type="submit" disabled={isSending}>
-              {isSending ? "Sending..." : "Send prompt"}
+              {isSending ? "Sending..." : "Create a lesson"}
             </button>
 
             {errorMessage && <p className="error-text">{errorMessage}</p>}

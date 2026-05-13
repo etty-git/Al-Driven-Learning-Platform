@@ -3,6 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 
 const Navigate = () => {
+  const handleLogout = () => {
+  dispatch(logout());
+  <NavLink to="/login">
+    Login
+  </NavLink>
+};
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
@@ -15,10 +21,13 @@ const Navigate = () => {
 
       <div className="nav-links">
         <NavLink to="/categories" className="nav-link">
-          Categories
+          Professions
         </NavLink>
         <NavLink to="/my-prompts" className="nav-link">
-          My Prompts
+          My Lessons
+        </NavLink>
+        <NavLink to="/" className="nav-link">
+          Home
         </NavLink>
         {auth.user?.isAdmin && (
           <NavLink to="/manager" className="nav-link">
@@ -31,7 +40,7 @@ const Navigate = () => {
         {auth.user ? (
           <>
             <span className="user-chip">Hi, {auth.user.name}</span>
-            <button className="ghost-button" onClick={() => dispatch(logout())}>
+            <button className="ghost-button" onClick={handleLogout}>
               Logout
             </button>
           </>

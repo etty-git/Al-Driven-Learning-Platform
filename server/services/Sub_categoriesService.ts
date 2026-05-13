@@ -1,50 +1,52 @@
-
 import Category from "../models/Categories";
 import Sub_Category from "../models/Sub_categories";
 
-export const createSubCategory = async (data: any)=> {
+export const createSubCategory = async (data: any) => {
+  const { name, categoryId } = data;
 
-    const { name, categoryId } = data;
+  if (!name || !categoryId) {
+    throw new Error("Name and category ID are required");
+  }
 
-    if (!name || !categoryId) {
-        throw new Error("Name and category ID are required");
-    }
+  const category = await Category.findById(categoryId);
 
-    const category = await Category.findById(categoryId);
+  if (!category) {
+    throw new Error("Category not found");
+  }
 
-    if (!category) {
-      throw new Error("Category not found");
-    }
+  const existingSubCategory = await Sub_Category.findOne({
+    name,
+    category: categoryId,
+  });
 
- const existingSubCategory = await Sub_Category.findOne({
-      name,
-      category: categoryId
-    });
+  if (existingSubCategory) {
+    throw new Error(
+      "Sub-category with this name already exists in the specified category"
+    );
+  }
 
-    if (existingSubCategory) {
-      throw new Error("Sub-category with this name already exists in the specified category");
-    }
+  const subCategory = await Sub_Category.create({
+    name,
+    category: categoryId,
+  });
 
-    const subCategory = await Sub_Category.create({
-      name,
-      category: categoryId
-    });
-
-    return subCategory;
-
-   
+  return subCategory;
 };
-export const getSubCategoriesByCategoryId = async (categoryId: string): Promise<any> => {
-  
-    const subCategories = await Sub_Category.find({
-    category: categoryId
+
+export const getSubCategoriesByCategoryId = async (
+  categoryId: string
+): Promise<any> => {
+  const subCategories = await Sub_Category.find({
+    category: categoryId,
   });
 
   if (!subCategories || subCategories.length === 0) {
     throw new Error("Sub-categories not found");
   }
 
-  return subCategories;}
+  return subCategories;
+};
+
 export const deleteSubCategory = async (id: string) => {
   try {
     const subCategory = await Sub_Category.findByIdAndDelete(id);
@@ -58,4 +60,3 @@ export const deleteSubCategory = async (id: string) => {
     throw new Error("Server error");
   }
 };
-

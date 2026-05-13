@@ -1,8 +1,7 @@
-const { api } = require("../services/api");
+import { api } from "../services/api";
 
 export const sub_categoriesAPI = api.injectEndpoints({
   endpoints: (build) => ({
-
     getSubCategoriesById: build.query({
       query: (categoryId) => `sub_categories/${categoryId}`,
       providesTags: ["SubCategory"],
@@ -24,7 +23,6 @@ export const sub_categoriesAPI = api.injectEndpoints({
       }),
       invalidatesTags: ["SubCategory"],
     }),
-
   }),
   overrideExisting: false,
 });

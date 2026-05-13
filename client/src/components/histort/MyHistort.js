@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
-import { useGetPromptsByUserIDQuery } from "../features/promptsAPI";
+import { useGetPromptsByUserIDQuery } from "../../features/promptsAPI";
 
 const MyPrompts = () => {
   const user = useSelector((state) => state.auth.user);
@@ -81,11 +81,18 @@ const MyPrompts = () => {
                 />
               </Box>
 
-              <Typography component="h3" variant="h6" sx={{ mb: 1.25, fontWeight: 700 }}>
+              <Typography
+                component="h3"
+                variant="h6"
+                sx={{ mb: 1.25, fontWeight: 700 }}
+              >
                 {item.prompt}
               </Typography>
 
-              <Typography component="p" sx={{ color: "var(--muted)", lineHeight: 1.55 }}>
+              <Typography
+                component="p"
+                sx={{ color: "var(--muted)", lineHeight: 1.55 }}
+              >
                 {item.response}
               </Typography>
             </CardContent>

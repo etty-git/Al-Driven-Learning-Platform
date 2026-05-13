@@ -1,8 +1,7 @@
-const {api} = require("../services/api");
+import { api } from "../services/api";
 
 export const promptsAPI = api.injectEndpoints({
   endpoints: (build) => ({
-    
     getPrompts: build.query({
       query: () => "prompts",
       providesTags: ["Prompt"],
@@ -16,6 +15,7 @@ export const promptsAPI = api.injectEndpoints({
       }),
       invalidatesTags: ["Prompt"],
     }),
+
     getPromptsByUserID: build.query({
       query: (id) => `prompts/user/${id}`,
       providesTags: ["Prompt"],
@@ -27,4 +27,4 @@ export const {
   useGetPromptsQuery,
   useCreatePromptMutation,
   useGetPromptsByUserIDQuery,
-} = promptsAPI;  
+} = promptsAPI;

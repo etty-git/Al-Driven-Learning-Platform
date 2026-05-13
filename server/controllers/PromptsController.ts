@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import * as PromptsService from "../services/PromptsService";
 
-
-
 const createPrompt = async (
   req: Request,
   res: Response
@@ -18,13 +16,9 @@ const createPrompt = async (
       message: error.message,
     });
   }
+};
 
-
-}
-const getPrompts = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+const getPrompts = async (req: Request, res: Response): Promise<Response> => {
   try {
     const result = await PromptsService.getPrompts();
     return res.status(200).json(result);
@@ -34,6 +28,7 @@ const getPrompts = async (
     });
   }
 };
+
 const getPromptsByUserID = async (
   req: Request<{ id: string }>,
   res: Response
@@ -53,4 +48,5 @@ const getPromptsByUserID = async (
     });
   }
 };
+
 export default { createPrompt, getPrompts, getPromptsByUserID };

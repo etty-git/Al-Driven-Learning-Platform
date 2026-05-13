@@ -2,92 +2,77 @@ import jwt from "jsonwebtoken";
 import User from "../models/Users";
 
 const buildAuthResponse = (user: any) => {
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
-    );
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
+    expiresIn: "1h",
+  });
 
-    return {
-      user: user.toObject(),
-      token
-    };
+  return {
+    user: user.toObject(),
+    token,
+  };
 };
 
 export const createUser = async (data: any) => {
-  
-    const name = data.name?.trim();
-    const phone = data.phone?.trim();
+  const name = data.name?.trim();
+  const phone = data.phone?.trim();
 
-    if (!name || !phone) {
+  if (!name || !phone) {
     throw new Error("Please provide all required fields");
-    }   
-    
-    
+  }
 
-    const existingUser = await User.findOne({ phone });
+  const existingUser = await User.findOne({ phone });
 
-    if (existingUser) {
-      throw new Error("User with this phone number already exists");
-    }
+  if (existingUser) {
+    throw new Error("User with this phone number already exists");
+  }
 
-    const user = await User.create({ name, phone });
+  const user = await User.create({ name, phone });
 
-    return buildAuthResponse(user);
-   
+  return buildAuthResponse(user);
 };
 
 export const loginUser = async (data: any) => {
-  
-    const name = data.name?.trim();
-    const phone = data.phone?.trim();
+  const name = data.name?.trim();
+  const phone = data.phone?.trim();
 
-    if (!phone||!name) {
-      throw new Error("Please provide the phone number and name");
-    }
-    
+  if (!phone || !name) {
+    throw new Error("Please provide the phone number and name");
+  }
 
-    const user = await User.findOne({ phone , name});
+  const user = await User.findOne({ phone, name });
 
-    if (!user) {
-      throw new Error("User not found");
-    }
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-    return buildAuthResponse(user);
-
-  
+  return buildAuthResponse(user);
 };
-export const getbyId= async (id: string) => {
-    
-    const user = await User.findById(id);
 
-    if (!user) {
-      throw new Error("User not found");
-    }
+export const getbyId = async (id: string) => {
+  const user = await User.findById(id);
 
-    return user;
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-  
-
+  return user;
 };
+
 export const getAllUsers = async () => {
-
-    const users = await User.find();    
-    return users;
-    
+  const users = await User.find();
+  return users;
 };
-    
-export const deleteUser = async (id: string) => {
-    const user = await User.findByIdAndDelete(id);
 
-    if (!user) {
-      throw new Error("User not found");
-    }
-    return {
-      message: "User deleted successfully"
-    };
+export const deleteUser = async (id: string) => {
+  const user = await User.findByIdAndDelete(id);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return {
+    message: "User deleted successfully",
+  };
 };
 
 export default { createUser, loginUser, getbyId, getAllUsers, deleteUser };
-  
-

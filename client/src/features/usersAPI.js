@@ -2,7 +2,6 @@ import { api } from "../services/api";
 
 export const usersAPI = api.injectEndpoints({
   endpoints: (build) => ({
-    
     getUser: build.query({
       query: (id) => `users/${id}`,
       providesTags: ["User"],
@@ -41,10 +40,10 @@ export const usersAPI = api.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-
   }),
   overrideExisting: false,
 });
+
 export const {
   useGetUserQuery,
   useCreateUserMutation,

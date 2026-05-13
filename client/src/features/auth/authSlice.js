@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  loadStoredJson,
   removeStoredJson,
   saveStoredJson,
-  loadStoredJson,
   storageKeys,
 } from "../../utils/storage";
 
-// 🔥 טוענים מה־localStorage בהתחלה
 const storedAuth = loadStoredJson(storageKeys.auth);
 
 const initialState = {
@@ -18,7 +17,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-
     setUser: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -30,16 +28,13 @@ const authSlice = createSlice({
     },
 
     logout: (state) => {
-      // 🔥 איפוס מוחלט
       state.user = null;
       state.token = null;
 
-      // 🔥 ניקוי storage
       removeStoredJson(storageKeys.auth);
       removeStoredJson(storageKeys.membership);
-      localStorage.removeItem("token"); // אם נשמר בנפרד
+      localStorage.removeItem("token");
     },
-
   },
 });
 

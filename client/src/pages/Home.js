@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import CategoriesPage from "./categories/CategoriesPage";
+import CategoriesPage from "../components/categories/CategoriesPage";
 
 const Home = () => {
   const user = useSelector((state) => state.auth.user);
