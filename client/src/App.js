@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CategoriesPage from "./components/categories/CategoriesPage";
 import CategoryDetails from "./components/categories/CategoryDetails";
-import MyPrompts from "./components/history/MyHistort";
+import MyPrompts from "./components/history/MyHistory";
 import MainDashboard from "./components/manager/MainDashboard";
 
 /**

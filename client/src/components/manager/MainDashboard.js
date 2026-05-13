@@ -41,13 +41,16 @@ const MainDashboard = () => {
       <div className="grid">
         {prompts.map((item) => (
           <article className="prompt-card" key={item._id}>
-            <h3>{item.prompt}</h3>
-            <p>{item.response}</p>
-            <p>
-              User: {item.user_id?.name || "Unknown"} | Category:{" "}
-              {item.category_id?.name || "Unknown"} | Sub-category:{" "}
+             <p>
+              User: {item.user_id?.name || "Unknown"} | profession:{" "}
+              {item.category_id?.name || "Unknown"} |sub_profession:{" "}
               {item.sub_category_id?.name || "Unknown"}
             </p>
+            <h5>The guideline:</h5>
+            <h3>{item.prompt}</h3>
+            <h5>AI response:</h5>
+            <p>{item.response}</p>
+           
           </article>
         ))}
       </div>

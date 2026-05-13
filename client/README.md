@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+Installation instructions:
+1-
+git clone <repo-url>
+cd project-name
+2-
+Installing hangers
+Frontend:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+cd client
+npm install
 
-## Available Scripts
+Backend
 
-In the project directory, you can run:
+cd server
+npm install
 
-### `npm start`
+In the server folder, create a file:  .env
+server/.env
+# Example .env file
+adn Paste:
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+AI_API_URL=https://api.openai.com/v1/chat/completions
+AI_API_KEY=your_api_key
+PORT=7001
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🔵 Running the Project
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+##  Running the server (Backend)
+cd server
+npm run dev
 
-### `npm test`
+The server will run on:http://localhost:7001
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running the Client (Frontend)
 
-### `npm run build`
+In a new terminal window:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+cd client
+npm start
+The site will open at:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+http://localhost:3000
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Notes
+Make sure MongoDB is running or Atlas is configured correctly
+Ensure .env file exists in the server folder before running backend
+Backend must run before frontend for full functionality
 
-### `npm run eject`
+## 🚀 Technologies Used
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Frontend
+- React
+- Redux Toolkit
+- RTK Query
+- React Router
+- Axios
+- CSS (custom styling)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- Axios (for AI API requests)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### External API
+- OpenAI API (GPT-3.5 / GPT models)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+##  Assumptions / Design Decisions
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Only admin users can manage or delete categories and sub-categories
+- Regular users can view only their own prompt history
+- Categories and sub-categories are stored in the database
+- Users must log in before creating prompts
+- JWT authentication is used for protected routes
+- AI responses are generated using an external API
+- Each prompt is connected to a category and sub-category

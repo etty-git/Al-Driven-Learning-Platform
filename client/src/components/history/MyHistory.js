@@ -7,7 +7,7 @@ import { useGetPromptsByUserIDQuery } from "../../features/promptsAPI";
  * עמוד "ההיסטוריה שלי"
  * מציג את כל ה-prompts של המשתמש והתשובות מה-AI
  */
-const MyPrompts = () => {
+const MyHistory = () => {
   const user = useSelector((state) => state.auth.user);
 
   const { data, isLoading, error } = useGetPromptsByUserIDQuery(user?._id, {
@@ -46,7 +46,7 @@ const MyPrompts = () => {
     <main className="page">
       {/* כותרת ראשית */}
       <section className="hero">
-        <span className="eyebrow">My Prompts</span>
+        <span className="eyebrow">My Learning history</span>
         <h1>Your AI answers</h1>
         <p>Review the prompts you sent and the responses you received.</p>
       </section>
@@ -115,4 +115,4 @@ const MyPrompts = () => {
   );
 };
 
-export default MyPrompts;
+export default MyHistory;

@@ -11,13 +11,11 @@ import { useCreatePromptMutation } from "../../features/promptsAPI";
 const CategoryDetails = () => {
   const authUser = useSelector((state) => state.auth.user);
   const { id } = useParams();
-
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const {
     data: subCategories,
     isLoading,
