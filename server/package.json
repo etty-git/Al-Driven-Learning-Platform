@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node server.ts",
     "seed:admins": "ts-node seed/admins.ts",
+    "seed:sub": "ts-node seed/sub_categories.ts",
+    "seed:categories": "ts-node seed/categories.ts",
     "start": "node dist/server.js"
   },
   "keywords": [],
