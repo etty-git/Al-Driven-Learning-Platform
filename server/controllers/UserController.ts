@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import * as UserService from "../services/UserService";
 
+/**
+ * יצירת משתמש חדש
+ */
 const createUser = async (req: Request, res: Response): Promise<Response> => {
   try {
     const result = await UserService.createUser(req.body);
-
     return res.status(201).json(result);
   } catch (error: any) {
     return res.status(400).json({
@@ -13,6 +15,9 @@ const createUser = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+/**
+ * התחברות משתמש
+ */
 const loginUser = async (req: Request, res: Response): Promise<Response> => {
   try {
     const result = await UserService.loginUser(req.body);
@@ -24,6 +29,9 @@ const loginUser = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+/**
+ * קבלת משתמש לפי ID (אדמין או המשתמש עצמו)
+ */
 const getbyId = async (
   req: Request<{ id: string }>,
   res: Response
@@ -44,6 +52,9 @@ const getbyId = async (
   }
 };
 
+/**
+ * קבלת כל המשתמשים
+ */
 const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const result = await UserService.getAllUsers();
@@ -55,6 +66,9 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+/**
+ * מחיקת משתמש לפי ID
+ */
 const deleteUser = async (
   req: Request<{ id: string }>,
   res: Response

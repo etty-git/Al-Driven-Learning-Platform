@@ -2,13 +2,21 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../features/categoriesAPI";
 
+/**
+ * עמוד קטגוריות (מקצועות)
+ * מציג מסך כניסה אם המשתמש לא מחובר,
+ * אחרת מציג רשימת קטגוריות לבחירה
+ */
 const CategoriesPage = () => {
   const authUser = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
+
   const isAuthenticated = Boolean(token && authUser);
+
   const navigate = useNavigate();
   const { data, isLoading, error } = useGetCategoriesQuery();
 
+  // אם המשתמש לא מחובר → מסך התחברות
   if (!isAuthenticated) {
     return (
       <main className="page">
@@ -16,6 +24,7 @@ const CategoriesPage = () => {
           <span className="eyebrow">Welcome</span>
           <h1>Login to choose a profession.</h1>
           <p>Your professions and prompt workspace open after connecting.</p>
+
           <div>
             <Link className="primary-button" to="/login">
               Login
@@ -28,12 +37,16 @@ const CategoriesPage = () => {
 
   return (
     <main className="page">
+      {/* ברכת משתמש */}
       <section className="hero">
         <span className="eyebrow">Hi, {authUser.name}</span>
         <h1>What do you want to learn today?</h1>
-        <p>Choose a profession. The next screen has the sub-professions, prompt box, and AI response.</p>
+        <p>
+          Choose a profession. The next screen has the sub-professions, prompt box, and AI response.
+        </p>
       </section>
 
+      {/* רשימת קטגוריות */}
       <section>
         <div className="section-header">
           <h2>Professions</h2>

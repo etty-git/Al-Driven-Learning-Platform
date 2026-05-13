@@ -1,5 +1,6 @@
 import Categories from "../models/Categories";
 
+// קבלת כל הקטגוריות
 export const getCategories = async () => {
   const categories = await Categories.find();
 
@@ -10,6 +11,7 @@ export const getCategories = async () => {
   return categories;
 };
 
+// יצירת קטגוריה חדשה
 export const createCategory = async (name: string) => {
   if (!name) {
     throw new Error("Name is required");
@@ -21,6 +23,7 @@ export const createCategory = async (name: string) => {
   return category;
 };
 
+// מחיקת קטגוריה לפי ID
 export const deleteCategory = async (id: string) => {
   const category = await Categories.findByIdAndDelete(id);
 

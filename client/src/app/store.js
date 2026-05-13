@@ -3,8 +3,14 @@ import { api } from "../services/api";
 import authReducer from "../features/auth/authSlice";
 import { loadStoredJson, storageKeys } from "../utils/storage";
 
+/**
+ * טעינת משתמש שמור מה־localStorage
+ */
 const storedAuth = loadStoredJson(storageKeys.auth, {});
 
+/**
+ * מצב התחלתי של ה־Redux store
+ */
 const preloadedState = {
   auth: {
     user: storedAuth?.user || null,
@@ -12,6 +18,9 @@ const preloadedState = {
   },
 };
 
+/**
+ * יצירת Redux store מרכזי
+ */
 export const store = configureStore({
   reducer: {
     auth: authReducer,

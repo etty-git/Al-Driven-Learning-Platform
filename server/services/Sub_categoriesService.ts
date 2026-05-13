@@ -1,6 +1,7 @@
 import Category from "../models/Categories";
 import Sub_Category from "../models/Sub_categories";
 
+// יצירת תת־קטגוריה
 export const createSubCategory = async (data: any) => {
   const { name, categoryId } = data;
 
@@ -9,7 +10,6 @@ export const createSubCategory = async (data: any) => {
   }
 
   const category = await Category.findById(categoryId);
-
   if (!category) {
     throw new Error("Category not found");
   }
@@ -20,9 +20,7 @@ export const createSubCategory = async (data: any) => {
   });
 
   if (existingSubCategory) {
-    throw new Error(
-      "Sub-category with this name already exists in the specified category"
-    );
+    throw new Error("Sub-category already exists in this category");
   }
 
   const subCategory = await Sub_Category.create({
@@ -33,12 +31,9 @@ export const createSubCategory = async (data: any) => {
   return subCategory;
 };
 
-export const getSubCategoriesByCategoryId = async (
-  categoryId: string
-): Promise<any> => {
-  const subCategories = await Sub_Category.find({
-    category: categoryId,
-  });
+// קבלת תתי־קטגוריות לפי קטגוריה
+export const getSubCategoriesByCategoryId = async (categoryId: string) => {
+  const subCategories = await Sub_Category.find({ category: categoryId });
 
   if (!subCategories || subCategories.length === 0) {
     throw new Error("Sub-categories not found");
@@ -47,6 +42,7 @@ export const getSubCategoriesByCategoryId = async (
   return subCategories;
 };
 
+// מחיקת תת־קטגוריה
 export const deleteSubCategory = async (id: string) => {
   try {
     const subCategory = await Sub_Category.findByIdAndDelete(id);

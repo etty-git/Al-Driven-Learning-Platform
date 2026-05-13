@@ -3,15 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 
 const Navigate = () => {
-  const handleLogout = () => {
-  dispatch(logout());
-  <NavLink to="/login">
-    Login
-  </NavLink>
-};
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
+  /**
+   * התנתקות משתמש
+   * (חשוב: לא מחזירים JSX מתוך הפונקציה - זה לא עובד)
+   */
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <nav className="top-nav">
       <NavLink to="/" className="brand">
@@ -23,12 +24,15 @@ const Navigate = () => {
         <NavLink to="/categories" className="nav-link">
           Professions
         </NavLink>
+
         <NavLink to="/my-prompts" className="nav-link">
           My Lessons
         </NavLink>
+
         <NavLink to="/" className="nav-link">
           Home
         </NavLink>
+
         {auth.user?.isAdmin && (
           <NavLink to="/manager" className="nav-link">
             Manager
@@ -40,6 +44,7 @@ const Navigate = () => {
         {auth.user ? (
           <>
             <span className="user-chip">Hi, {auth.user.name}</span>
+
             <button className="ghost-button" onClick={handleLogout}>
               Logout
             </button>

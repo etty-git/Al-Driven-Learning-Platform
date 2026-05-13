@@ -1,12 +1,22 @@
 import { api } from "../services/api";
 
+/**
+ * RTK Query endpoints עבור Users
+ */
 export const usersAPI = api.injectEndpoints({
   endpoints: (build) => ({
+
+    /**
+     * קבלת משתמש לפי ID
+     */
     getUser: build.query({
       query: (id) => `users/${id}`,
       providesTags: ["User"],
     }),
 
+    /**
+     * יצירת משתמש (admin / פנימי)
+     */
     createUser: build.mutation({
       query: (userData) => ({
         url: "users",
@@ -16,6 +26,9 @@ export const usersAPI = api.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
+    /**
+     * הרשמת משתמש חדש
+     */
     registerUser: build.mutation({
       query: (data) => ({
         url: "users/register",
@@ -25,6 +38,9 @@ export const usersAPI = api.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
+    /**
+     * התחברות משתמש
+     */
     loginUser: build.mutation({
       query: (data) => ({
         url: "users/login",
@@ -33,6 +49,9 @@ export const usersAPI = api.injectEndpoints({
       }),
     }),
 
+    /**
+     * מחיקת משתמש
+     */
     deleteUser: build.mutation({
       query: (id) => ({
         url: `users/${id}`,

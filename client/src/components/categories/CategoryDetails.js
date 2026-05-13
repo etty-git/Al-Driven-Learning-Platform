@@ -4,21 +4,31 @@ import { useSelector } from "react-redux";
 import { useGetSubCategoriesByIdQuery } from "../../features/sub_categoriesAPI";
 import { useCreatePromptMutation } from "../../features/promptsAPI";
 
+/**
+ * עמוד פרטי קטגוריה
+ * מאפשר בחירת תת־קטגוריה ושליחת prompt ל-AI
+ */
 const CategoryDetails = () => {
   const authUser = useSelector((state) => state.auth.user);
   const { id } = useParams();
+
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const {
     data: subCategories,
     isLoading,
     isError,
   } = useGetSubCategoriesByIdQuery(id);
+
   const [createPrompt, { isLoading: isSending }] = useCreatePromptMutation();
 
+  /**
+   * שליחת prompt לשרת + קבלת תשובת AI
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
@@ -55,6 +65,7 @@ const CategoryDetails = () => {
           <span className="eyebrow">Prompt workspace</span>
           <h1 className="page-title">Write your prompt</h1>
         </div>
+
         <Link className="nav-link" to="/categories">
           Back to professions
         </Link>
@@ -91,7 +102,10 @@ const CategoryDetails = () => {
         </aside>
 
         <section className="chat-panel">
-          <span className="eyebrow">{selectedName || "Choose a sub-category"}</span>
+          <span className="eyebrow">
+            {selectedName || "Choose a sub-category"}
+          </span>
+
           <h2>Ask the AI</h2>
 
           <div className="answer-box">

@@ -3,6 +3,9 @@ export const storageKeys = {
   membership: "fitmanager_membership",
 };
 
+/**
+ * טעינת נתון מ-localStorage בפורמט JSON
+ */
 export const loadStoredJson = (key, fallback = null) => {
   try {
     const value = localStorage.getItem(key);
@@ -12,18 +15,24 @@ export const loadStoredJson = (key, fallback = null) => {
   }
 };
 
+/**
+ * שמירת נתון ל-localStorage בפורמט JSON
+ */
 export const saveStoredJson = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // Ignore storage write issues in UI code.
+    // התעלמות משגיאות כתיבה
   }
 };
 
+/**
+ * מחיקת נתון מ-localStorage
+ */
 export const removeStoredJson = (key) => {
   try {
     localStorage.removeItem(key);
   } catch {
-    // Ignore storage removal issues in UI code.
+    // התעלמות משגיאות מחיקה
   }
 };

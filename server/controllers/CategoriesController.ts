@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import * as CategoriesService from "../services/CategoriesService";
 
+/**
+ * קבלת כל הקטגוריות
+ */
 const getCategories = async (req: Request, res: Response): Promise<Response> => {
   try {
     const result = await CategoriesService.getCategories();
@@ -12,6 +15,9 @@ const getCategories = async (req: Request, res: Response): Promise<Response> => 
   }
 };
 
+/**
+ * יצירת קטגוריה חדשה
+ */
 const createCategory = async (req: Request, res: Response): Promise<Response> => {
   try {
     const result = await CategoriesService.createCategory(req.body.name);
@@ -23,6 +29,9 @@ const createCategory = async (req: Request, res: Response): Promise<Response> =>
   }
 };
 
+/**
+ * מחיקת קטגוריה לפי ID
+ */
 const deleteCategory = async (
   req: Request<{ id: string }>,
   res: Response

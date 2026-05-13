@@ -4,6 +4,7 @@ import Prompts from "../models/Prompts";
 import Sub_Category from "../models/Sub_categories";
 import User from "../models/Users";
 
+// יצירת prompt + קריאה ל-AI ושמירה ב-DB
 export const createPrompt = async (data: any) => {
   const { sub_category_id, category_id, user_id, prompt } = data;
 
@@ -12,22 +13,13 @@ export const createPrompt = async (data: any) => {
   }
 
   const subCategory = await Sub_Category.findById(sub_category_id);
-
-  if (!subCategory) {
-    throw new Error("Sub-category not found");
-  }
+  if (!subCategory) throw new Error("Sub-category not found");
 
   const category = await Category.findById(category_id);
-
-  if (!category) {
-    throw new Error("Category not found");
-  }
+  if (!category) throw new Error("Category not found");
 
   const user = await User.findById(user_id);
-
-  if (!user) {
-    throw new Error("User not found");
-  }
+  if (!user) throw new Error("User not found");
 
   const aiResponse = await axios.post(
     process.env.AI_API_URL!,
@@ -66,6 +58,7 @@ export const createPrompt = async (data: any) => {
   };
 };
 
+// שליפת כל הפרומפטים
 export const getPrompts = async () => {
   const prompts = await Prompts.find()
     .populate("user_id", "name phone isAdmin")
@@ -79,10 +72,9 @@ export const getPrompts = async () => {
   };
 };
 
+// שליפת פרומפטים לפי משתמש
 export const getPromptsByUserID = async (id: string) => {
-  if (!id) {
-    throw new Error("Please provide a user ID");
-  }
+  if (!id) throw new Error("Please provide a user ID");
 
   const prompts = await Prompts.find({ user_id: id })
     .populate("category_id", "name")

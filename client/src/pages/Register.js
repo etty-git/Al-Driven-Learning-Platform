@@ -4,18 +4,27 @@ import { useDispatch } from "react-redux";
 import { useRegisterUserMutation } from "../features/usersAPI";
 import { setUser } from "../features/auth/authSlice";
 
+/**
+ * עמוד הרשמה למשתמש חדש
+ */
 export default function Register() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+
   const [registerUser, { isLoading }] = useRegisterUserMutation();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  /**
+   * שליחת טופס הרשמה
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const res = await registerUser({ name, phone }).unwrap();
+
       dispatch(setUser({ user: res.user, token: res.token }));
       navigate("/categories");
     } catch (err) {

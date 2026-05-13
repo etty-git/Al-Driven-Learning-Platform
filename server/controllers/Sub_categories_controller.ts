@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import * as Sub_categoriesService from "../services/Sub_categoriesService";
 
+/**
+ * יצירת תת־קטגוריה חדשה
+ */
 const createSubCategory = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
     const result = await Sub_categoriesService.createSubCategory(req.body);
-
     return res.status(201).json(result);
   } catch (error: any) {
     return res.status(400).json({
@@ -16,6 +18,9 @@ const createSubCategory = async (
   }
 };
 
+/**
+ * קבלת תתי־קטגוריות לפי קטגוריה
+ */
 const getSubCategories = async (
   req: Request<{ categoryId: string }>,
   res: Response
@@ -33,6 +38,9 @@ const getSubCategories = async (
   }
 };
 
+/**
+ * מחיקת תת־קטגוריה לפי ID
+ */
 const deleteSubCategory = async (
   req: Request<{ id: string }>,
   res: Response

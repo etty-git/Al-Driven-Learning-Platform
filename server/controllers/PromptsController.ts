@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import * as PromptsService from "../services/PromptsService";
 
-const createPrompt = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+/**
+ * יצירת prompt חדש (משתמש מחובר)
+ */
+const createPrompt = async (req: Request, res: Response): Promise<Response> => {
   try {
     const result = await PromptsService.createPrompt({
       ...req.body,
@@ -18,6 +18,9 @@ const createPrompt = async (
   }
 };
 
+/**
+ * קבלת כל הפרומפטים (אדמין)
+ */
 const getPrompts = async (req: Request, res: Response): Promise<Response> => {
   try {
     const result = await PromptsService.getPrompts();
@@ -29,6 +32,9 @@ const getPrompts = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+/**
+ * קבלת פרומפטים לפי משתמש (או אדמין)
+ */
 const getPromptsByUserID = async (
   req: Request<{ id: string }>,
   res: Response

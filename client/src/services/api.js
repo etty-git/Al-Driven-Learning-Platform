@@ -1,7 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+/**
+ * כתובת בסיס של ה־API
+ */
 export const API_BASE_URL = "http://localhost:7001/api";
 
+/**
+ * RTK Query בסיסי לכל ה־API של האפליקציה
+ * כולל הוספת טוקן אוטומטית לכל בקשה
+ */
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({

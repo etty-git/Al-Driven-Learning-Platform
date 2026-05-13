@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../models/Users";
 
+/**
+ * הרחבת Request כדי להכיל user אחרי אימות
+ */
 type AuthRequest = Request & {
   user?: {
     id: string;
@@ -11,6 +14,13 @@ type AuthRequest = Request & {
   };
 };
 
+/**
+ * middleware לאימות משתמש בעזרת JWT
+ * - בודק קיום טוקן
+ * - מאמת טוקן
+ * - שולף משתמש מה-DB
+ * - מוסיף req.user
+ */
 const auth = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const authHeader = req.headers["authorization"];
 

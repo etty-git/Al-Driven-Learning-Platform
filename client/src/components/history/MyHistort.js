@@ -3,19 +3,26 @@ import { Link } from "react-router-dom";
 import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
 import { useGetPromptsByUserIDQuery } from "../../features/promptsAPI";
 
+/**
+ * עמוד "ההיסטוריה שלי"
+ * מציג את כל ה-prompts של המשתמש והתשובות מה-AI
+ */
 const MyPrompts = () => {
   const user = useSelector((state) => state.auth.user);
+
   const { data, isLoading, error } = useGetPromptsByUserIDQuery(user?._id, {
     skip: !user?._id,
     refetchOnMountOrArgChange: true,
   });
 
+  // אם המשתמש לא מחובר
   if (!user) {
     return (
       <main className="page">
         <section className="hero">
-          <span className="eyebrow">My Prompts</span>
-          <h1>Login to see your prompt history.</h1>
+          <span className="eyebrow">My Learning history</span>
+          <h1>Login to see your Learning history.</h1>
+
           <div>
             <Link className="primary-button" to="/login">
               Login
@@ -27,6 +34,8 @@ const MyPrompts = () => {
   }
 
   const prompts = data?.prompts || [];
+
+  // פונקציה להצגת שם מקושר (קטגוריה / תת־קטגוריה)
   const getName = (value) => {
     if (!value) return "Unknown";
     if (typeof value === "string") return "Loading name...";
@@ -35,6 +44,7 @@ const MyPrompts = () => {
 
   return (
     <main className="page">
+      {/* כותרת ראשית */}
       <section className="hero">
         <span className="eyebrow">My Prompts</span>
         <h1>Your AI answers</h1>
@@ -44,6 +54,7 @@ const MyPrompts = () => {
       {isLoading && <p className="empty-state">Loading prompts...</p>}
       {error && <p className="error-text">Error loading prompts</p>}
 
+      {/* רשימת פרומפטים */}
       <div className="grid">
         {prompts.map((item) => (
           <Card
@@ -58,6 +69,7 @@ const MyPrompts = () => {
             }}
           >
             <CardContent sx={{ p: 0, "&:last-child": { pb: 0 } }}>
+              {/* תגיות קטגוריה */}
               <Box className="prompt-meta prompt-meta-top">
                 <Chip
                   label={`Category: ${getName(item.category_id)}`}
@@ -69,6 +81,7 @@ const MyPrompts = () => {
                     fontWeight: 700,
                   }}
                 />
+
                 <Chip
                   label={`Sub-category: ${getName(item.sub_category_id)}`}
                   size="small"
@@ -81,18 +94,13 @@ const MyPrompts = () => {
                 />
               </Box>
 
-              <Typography
-                component="h3"
-                variant="h6"
-                sx={{ mb: 1.25, fontWeight: 700 }}
-              >
+              {/* תוכן prompt */}
+              <Typography component="h3" variant="h6" sx={{ mb: 1.25, fontWeight: 700 }}>
                 {item.prompt}
               </Typography>
 
-              <Typography
-                component="p"
-                sx={{ color: "var(--muted)", lineHeight: 1.55 }}
-              >
+              {/* תשובת AI */}
+              <Typography component="p" sx={{ color: "var(--muted)", lineHeight: 1.55 }}>
                 {item.response}
               </Typography>
             </CardContent>

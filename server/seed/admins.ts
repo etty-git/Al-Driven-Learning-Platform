@@ -4,6 +4,7 @@ import User from "../models/Users";
 
 dotenv.config();
 
+// יצירת/עדכון משתמש אדמין אוטומטי לפי ENV
 const seedAdmins = async () => {
   const mongoUri = process.env.MONGO_URI;
   const name = process.env.ADMIN_NAME || "Admin";
@@ -22,9 +23,11 @@ const seedAdmins = async () => {
   );
 
   console.log(`Admin ready: ${admin.name} (${admin.phone})`);
+
   await mongoose.disconnect();
 };
 
+// הרצת seed + טיפול בשגיאות
 seedAdmins().catch(async (error) => {
   console.error("Admin seed failed:", error);
   await mongoose.disconnect();

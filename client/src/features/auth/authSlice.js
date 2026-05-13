@@ -6,8 +6,14 @@ import {
   storageKeys,
 } from "../../utils/storage";
 
+/**
+ * טעינת משתמש שמור מהאחסון המקומי
+ */
 const storedAuth = loadStoredJson(storageKeys.auth);
 
+/**
+ * מצב התחלתי של authentication
+ */
 const initialState = {
   user: storedAuth?.user || null,
   token: storedAuth?.token || null,
@@ -17,6 +23,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    /**
+     * שמירת משתמש וטוקן לאחר התחברות/הרשמה
+     */
     setUser: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -27,6 +36,9 @@ const authSlice = createSlice({
       });
     },
 
+    /**
+     * התנתקות משתמש + ניקוי אחסון
+     */
     logout: (state) => {
       state.user = null;
       state.token = null;

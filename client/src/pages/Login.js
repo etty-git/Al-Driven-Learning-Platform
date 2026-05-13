@@ -4,18 +4,26 @@ import { useDispatch } from "react-redux";
 import { useLoginUserMutation } from "../features/usersAPI";
 import { setUser } from "../features/auth/authSlice";
 
+/**
+ * עמוד התחברות משתמש
+ */
 export default function Login() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+
   const [login] = useLoginUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  /**
+   * שליחת טופס התחברות
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const res = await login({ name, phone }).unwrap();
+
       dispatch(setUser({ user: res.user, token: res.token }));
       navigate("/categories");
     } catch (err) {
