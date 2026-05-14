@@ -1,16 +1,22 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import Navigate from "./Navigate";
 
-/**
- * Layout ראשי של האפליקציה
- * כולל ניווט ותוכן דינמי לפי route
- */
 const Layout = () => {
+  const token = useSelector(state => state.auth.token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
+
   return (
     <div className="app-shell">
       <Navigate />
       <Outlet />
-   
     </div>
   );
 };

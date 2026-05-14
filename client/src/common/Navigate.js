@@ -11,8 +11,9 @@ const Navigate = () => {
    * (חשוב: לא מחזירים JSX מתוך הפונקציה - זה לא עובד)
    */
   const handleLogout = () => {
-    dispatch(logout());
-  };
+  dispatch(logout());
+  
+};
   return (
     <nav className="top-nav">
       <NavLink to="/" className="brand">

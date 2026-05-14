@@ -4,8 +4,6 @@ import { useGetCategoriesQuery } from "../../features/categoriesAPI";
 
 /**
  * עמוד קטגוריות (מקצועות)
- * מציג מסך כניסה אם המשתמש לא מחובר,
- * אחרת מציג רשימת קטגוריות לבחירה
  */
 const CategoriesPage = () => {
   const authUser = useSelector((state) => state.auth.user);
@@ -14,9 +12,19 @@ const CategoriesPage = () => {
   const isAuthenticated = Boolean(token && authUser);
 
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetCategoriesQuery();
 
-  // אם המשתמש לא מחובר → מסך התחברות
+  // ❗ חשוב: לעצור query כשאין token
+  const { data, isLoading, error } = useGetCategoriesQuery(undefined, {
+    skip: !token,
+  });
+
+  // נרמול נתונים (מונע קריסות בזמן logout)
+  const categories = Array.isArray(data) ? data : [];
+
+  // ❗ הגנה נוספת בזמן logout (מונע race condition)
+  if (!token) return null;
+
+  // אם המשתמש לא מחובר
   if (!isAuthenticated) {
     return (
       <main className="page">
@@ -25,11 +33,9 @@ const CategoriesPage = () => {
           <h1>Login to choose a profession.</h1>
           <p>Your professions and prompt workspace open after connecting.</p>
 
-          <div>
-            <Link className="primary-button" to="/login">
-              Login
-            </Link>
-          </div>
+          <Link className="primary-button" to="/login">
+            Login
+          </Link>
         </section>
       </main>
     );
@@ -42,7 +48,7 @@ const CategoriesPage = () => {
         <span className="eyebrow">Hi, {authUser.name}</span>
         <h1>What do you want to learn today?</h1>
         <p>
-          Choose a profession. The next screen has the sub-professions, prompt box, and AI response.
+          Choose a profession. The next screen has sub-professions and workspace.
         </p>
       </section>
 
@@ -57,7 +63,7 @@ const CategoriesPage = () => {
         {error && <p className="error-text">Error loading professions</p>}
 
         <div className="grid">
-          {data?.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat._id}
               className="category-card"
@@ -69,7 +75,7 @@ const CategoriesPage = () => {
           ))}
         </div>
 
-        {!isLoading && !data?.length && (
+        {!isLoading && categories.length === 0 && (
           <p className="empty-state">No professions yet.</p>
         )}
       </section>
